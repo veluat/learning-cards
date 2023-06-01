@@ -6,17 +6,20 @@ import { Provider } from "react-redux"
 import { createTheme, ThemeProvider } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import { useEffect } from "react"
+import { appActions } from "@/features/app/app.slice"
 
 export const Test = () => {
   const isLoading = useAppSelector((state) => state.app.isLoading)
+  const isAppInitialized = useAppSelector((state) => state.app.isAppInitialized)
   const dispatch = useAppDispatch()
-  if (isLoading) return <div>loading...</div>
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch
-    })
-  })
+      dispatch(appActions.setIsLoading({ isLoading: false }))
+    }, 3000)
+  }, [dispatch])
+
+  if (isLoading) return <div>loading...</div>
   return (
     <div>
       <Counter />

@@ -29,4 +29,8 @@ build
 # Miscellaneous
 *.local
 
+# idea
 .idea/
+
+# env
+.env*
