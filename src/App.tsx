@@ -18,7 +18,7 @@ export const Test = () => {
     setTimeout(() => {
       dispatch(appActions.setIsLoading({ isLoading: false }))
     }, 3000)
-    dispatch(authThunks.register())
+    dispatch(authThunks.register({ email: "email", password: "password" }))
   }, [dispatch])
 
   if (isLoading) return <div>loading...</div>

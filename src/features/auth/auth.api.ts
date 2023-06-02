@@ -5,7 +5,7 @@ export const AuthApi = {
     return AuthInstance.post<RegisterResponse>("register", params)
   },
   login: (params: LoginArgs) => {
-    return AuthInstance.post<User>("login", params)
+    return AuthInstance.post<ProfileType>("login", params)
   },
 }
 
@@ -13,12 +13,13 @@ export type RegisterResponse = {
   addedUser: AddedUser
 }
 type PasswordToPick = { password: string }
-export type AddedUser = Omit<User, "token" | "tokenDeathTime">
-export type RegisterArgs = Pick<User, "email"> & PasswordToPick
-export type LoginArgs = Pick<User, "email" | "rememberMe"> & PasswordToPick
-export type PartialUser = Partial<User>
+export type AddedUser = Omit<ProfileType, "token" | "tokenDeathTime">
+export type RegisterArgs = Pick<ProfileType, "email"> & PasswordToPick
+export type LoginArgs = Pick<ProfileType, "email" | "rememberMe"> &
+  PasswordToPick
+export type PartialUser = Partial<ProfileType>
 
-export type User = {
+export type ProfileType = {
   _id: string
   email: string
   rememberMe: boolean

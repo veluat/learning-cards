@@ -1,46 +1,59 @@
-import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit"
+import { createSlice, PayloadAction } from "@reduxjs/toolkit"
 import {
   AuthApi,
   LoginArgs,
+  ProfileType,
   RegisterArgs,
-  User,
 } from "@/features/auth/auth.api"
+import { createAppAsyncThunk } from "@/common"
 
-const register = createAsyncThunk("auth/register", (arg: RegisterArgs) => {
-  AuthApi.register(arg)
-    .then((res) => {
-      debugger
-    })
-    .catch((res) => {
-      console.error(res)
-    })
-})
+const THUNK_PREFIXES = {
+  REGISTER: "auth/register",
+  LOGIN: "auth/login",
+}
 
-const login = createAsyncThunk(
-  "auth/login",
-  async (arg: LoginArgs, thunkAPI) => {
-    try {
-      const res = await AuthApi.login(arg)
-      return { user: res.data }
-    } catch (e) {
-      console.error(e)
-    }
+const register = createAppAsyncThunk<any, RegisterArgs>(
+  THUNK_PREFIXES.REGISTER,
+  (arg: RegisterArgs) => {
+    AuthApi.register(arg)
+      .then((res) => {})
+      .catch((res) => {
+        console.error(res)
+      })
+  },
+)
+
+const login = createAppAsyncThunk<{ profile: ProfileType }, LoginArgs>(
+  THUNK_PREFIXES.LOGIN,
+  async (arg: LoginArgs) => {
+    const res = await AuthApi.login(arg)
+    return { profile: res.data }
   },
 )
 
 const slice = createSlice({
   name: "auth",
   initialState: {
-    user: null as User | null,
+    profile: null as ProfileType | null,
+    isLoading: false,
   },
   reducers: {
-    setUser: (state, action: PayloadAction<{ user: User }>) => {
-      state.user = action.payload.user
+    setUser: (state, action: PayloadAction<{ profile: ProfileType }>) => {
+      state.profile = action.payload.profile
     },
   },
   extraReducers: (builder) => {
+    builder.addCase(login.pending, (state) => {
+      state.isLoading = true
+    })
     builder.addCase(login.fulfilled, (state, action) => {
-      if (action.payload?.user) state.user = action.payload.user
+      if (action.payload?.profile) {
+        state.profile = action.payload.profile
+        state.isLoading = false
+      }
+    })
+    builder.addCase(login.rejected, (state) => {
+      state.isLoading = false
     })
   },
 })
