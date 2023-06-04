@@ -6,8 +6,9 @@ import { Provider } from "react-redux"
 import { createTheme, ThemeProvider } from "@mui/material"
 import { useAppDispatch, useAppSelector } from "@/app/hooks"
 import { useEffect } from "react"
-import { appActions } from "@/features/app/app.slice"
+import { appActions } from "@/app/app.slice"
 import { authThunks } from "@/features/auth/auth.slice"
+import { Registration } from "@/features/auth/Registration/Registration"
 
 export const Test = () => {
   const isLoading = useAppSelector((state) => state.app.isLoading)
@@ -24,6 +25,7 @@ export const Test = () => {
   if (isLoading) return <div>loading...</div>
   return (
     <div>
+      <Registration />
       <Counter />
     </div>
   )
@@ -40,7 +42,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/register",
-    element: <h1>Register</h1>,
+    element: <Registration />,
   },
   {
     path: "/packs",
