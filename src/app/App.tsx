@@ -9,6 +9,7 @@ import { useEffect } from "react"
 import { appActions } from "@/app/app.slice"
 import { authThunks } from "@/features/auth/auth.slice"
 import { Registration } from "@/features/auth/Registration/Registration"
+import { Login } from "@/features/auth/Login/Login"
 
 export const Test = () => {
   const isLoading = useAppSelector((state) => state.app.isLoading)
@@ -38,7 +39,7 @@ const router = createBrowserRouter([
   },
   {
     path: "/login",
-    element: <h1>Login</h1>,
+    element: <Login />,
   },
   {
     path: "/register",
